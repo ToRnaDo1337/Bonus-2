@@ -3,8 +3,8 @@ package main
 import "fmt"
 
 type Node struct {
-	value   int
-	pointer *Node
+	value int
+	next  *Node
 }
 
 type Stack struct {
@@ -22,7 +22,7 @@ func (s *Stack) Pop() (int, error) {
 		return 0, fmt.Errorf("В стэке ничего нет")
 	}
 	value := s.head.value
-	s.head = s.head.pointer
+	s.head = s.head.next
 	s.size--
 	return value, nil
 }
@@ -45,7 +45,7 @@ func (s *Stack) Contains(value int) bool {
 		if node.value == value {
 			return true
 		}
-		node = node.pointer
+		node = node.next
 	}
 	return false
 }
@@ -54,7 +54,7 @@ func (s *Stack) Increment() {
 	node := s.head
 	for node != nil {
 		node.value++
-		node = node.pointer
+		node = node.next
 	}
 }
 
@@ -64,7 +64,7 @@ func (s *Stack) PrintReverse() {
 
 	for node != nil {
 		stack = append(stack, node.value)
-		node = node.pointer
+		node = node.next
 	}
 
 	for i := len(stack) - 1; i >= 0; i-- {
@@ -79,12 +79,15 @@ func main() {
 	s.Push(21)
 	s.Push(212)
 	s.Push(44)
+	peekValue, _ := s.Peek()
+	fmt.Printf("Peek value: %d\n", peekValue)
 
 	if s.Contains(10) {
 		fmt.Println("В стэке есть 10")
 	} else {
 		fmt.Println("В стэке нет 10")
 	}
+
 	s.Increment()
 	s.PrintReverse()
 	s.Clear()
